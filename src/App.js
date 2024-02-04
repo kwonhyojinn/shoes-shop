@@ -3,17 +3,24 @@ import "./App.css";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import data from "./data.js";
 import { useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link, useNavigate } from "react-router-dom";
 import DetailPage from "./pages/DetailPage.jsx";
 
 function App() {
   let [shoes] = useState(data);
+  let navigate = useNavigate();
 
   return (
     <div className="App">
       <Navbar bg="light" data-bs-theme="light">
         <Container>
-          <Navbar.Brand href="#home">Shoes Shop</Navbar.Brand>
+          <Navbar.Brand
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Shoes Shop
+          </Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="#all">All</Nav.Link>
             <Nav.Link href="#new">New</Nav.Link>
@@ -39,7 +46,7 @@ function App() {
             </>
           }
         />
-        <Route path="/detail" element={<DetailPage />} />
+        <Route path="/detail/:id" element={<DetailPage shoes={shoes}/>} />
       </Routes>
     </div>
   );
@@ -48,7 +55,7 @@ function App() {
 function Card(props) {
   return (
     <div className="col-md-4">
-      <Link to="/detail">
+      <Link to={`detail/${props.i}`}>
         <img
           src={process.env.PUBLIC_URL + `/shoes${props.i + 1}.jpeg`}
           width="80%"
